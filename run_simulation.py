@@ -1,8 +1,10 @@
-# run_simulation.py
+# run_simulation.py (Partial)
+
 import asyncio
 from functools import partial
 
-from src.agents import UniversalModelAgent
+# --- IMPORTANT: Import the new GeminiAgent ---
+from src.agents import GeminiAgent 
 from src.framework import MessageBus, SessionVerdictCache
 from src.security import (
     SentinelMiddleware,
@@ -11,31 +13,19 @@ from src.security import (
     handle_graduated_response
 )
 
-# Global instances for the simulation
-bus = MessageBus()
-verdict_cache = SessionVerdictCache()
-
-async def mcp_on_tool_call(call_name: str, session_id: str):
-    """Simulates the check before a sensitive tool is executed."""
-    verdict = verdict_cache.get(session_id)
-    print(f"[MCP HOOK] Attempting tool call '{call_name}' in session {session_id}. Verdict: {verdict.level}")
-
-    if verdict.level in ['hard', 'tripwire']:
-        print(f"[MCP HOOK] Tool call BLOCKED: Session status is {verdict.level}.")
-        return {"error": "Tool call blocked by high-risk policy."}
-    
-    print(f"[MCP HOOK] Tool call GRANTED: Executing {call_name}...")
-    return {"result": f"Tool '{call_name}' successfully executed."}
+# ... (mcp_on_tool_call and other parts remain the same) ...
 
 async def main():
     """Sets up and runs the security framework simulation."""
-    # Setup event listeners for Aegis, using partial to pass shared instances
+    # Setup event listeners for Aegis
+    bus = MessageBus()
+    verdict_cache = SessionVerdictCache()
     bus.on('agent.input', partial(extract_metrics, bus=bus))
     bus.on('agent.metrics', partial(ensemble_vote, bus=bus, cache=verdict_cache))
     bus.on('agent.verdict', handle_graduated_response)
 
-    # Core Agents
-    llm_agent = UniversalModelAgent("gemini-1.5-flash-latest")
+    llm_agent = GeminiAgent("gemini-2.5-flash")
+    
     sentinel = SentinelMiddleware("thalora-sentinel", llm_agent, bus, verdict_cache)
 
     # --- SCENARIO 1: SAFE, TRUSTED INPUT ---
