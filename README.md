@@ -32,7 +32,7 @@ The framework consists of two main components:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/prompt-security-framework.git
+    git clone https://github.com/AdamBoxy/Sentinel-Plug-in.git
     cd prompt-security-framework
     ```
 
