@@ -15,16 +15,7 @@ class Agent:
         """Core agent handler (must be overridden)."""
         raise NotImplementedError
 
-# --- Mock Agent (for comparison or fallback) ---
-class UniversalModelAgent(Agent):
-    """Simulates a generic underlying LLM."""
-    async def handle(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
-        prompt = input_data.get("message")
-        print(f"[{self.name}] Simulating processing of prompt...")
-        await asyncio.sleep(0.1)
-        return {"response": f"SIMULATED RESPONSE for: '{prompt}'"}
-
-# --- NEW: Live Gemini Agent ---
+# --- Gemini Agent ---
 class GeminiAgent(Agent):
     """
     An agent that uses the Google Gemini API to generate responses.
