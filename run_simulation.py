@@ -12,10 +12,22 @@ from src.security import (
     handle_graduated_response
 )
 
-# ... (mcp_on_tool_call and other parts remain the same) ...
-
 async def main():
     """Sets up and runs the security framework simulation."""
+    
+    # --- 1. Retrieve API Key using Kaggle Secrets ---
+    try:
+        # Instantiate the client
+        secrets_client = UserSecretsClient()
+        # Fetch the secret named 'GEMINI_API_KEY'
+        GEMINI_KEY = secrets_client.get_secret("GEMINI_API_KEY") 
+        print("[SETUP] Successfully retrieved GEMINI_API_KEY from Kaggle Secrets.")
+    except Exception as e:
+        # Handle the case where the secret isn't available (e.g., user hasn't added it)
+        print(f"[ERROR] Could not retrieve GEMINI_API_KEY from Kaggle Secrets: {e}")
+        # Use a placeholder, but the GeminiAgent might still raise an error if it attempts a real call.
+        GEMINI_KEY = "PLACEHOLDER_FOR_SIMULATION" 
+
     # Setup event listeners for Aegis
     bus = MessageBus()
     verdict_cache = SessionVerdictCache()
@@ -23,11 +35,13 @@ async def main():
     bus.on('agent.metrics', partial(ensemble_vote, bus=bus, cache=verdict_cache))
     bus.on('agent.verdict', handle_graduated_response)
 
-    llm_agent = GeminiAgent("gemini-2.5-flash")
-    
+    # --- 2. Pass the Key to GeminiAgent ---
+    llm_agent = GeminiAgent("gemini-2.5-flash", api_key=GEMINI_KEY)
+   
     sentinel = SentinelMiddleware("thalora-sentinel", llm_agent, bus, verdict_cache)
 
     # --- SCENARIO 1: SAFE, TRUSTED INPUT ---
+
     safe_input = {
         "sessionId": "session-1",
         "source": "mcp1.local",
