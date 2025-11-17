@@ -38,7 +38,10 @@ class GeminiAgent(Agent):
     """
     def __init__(self, model_name: str = "gemini-2.5-flash", api_key: str = None):
         super().__init__(model_name)
+        self.model_name = model_name
+        self.api_key = api_key
         self.configure_client()
+
         self.model = genai.GenerativeModel(model_name)
         print(f"[{self.name}] Live agent initialized.")
 
