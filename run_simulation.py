@@ -1,9 +1,8 @@
-# run_simulation.py (Partial)
+# run_simulation.py 
 
 import asyncio
 from functools import partial
-
-# --- IMPORTANT: Import the new GeminiAgent ---
+from kaggle_secrets import UserSecretsClient
 from src.agents import GeminiAgent 
 from src.framework import MessageBus, SessionVerdictCache
 from src.security import (
