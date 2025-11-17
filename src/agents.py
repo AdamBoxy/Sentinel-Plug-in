@@ -3,8 +3,33 @@
 import asyncio
 import os
 from typing import Any, Dict
-
 import google.generativeai as genai
+
+class Agent:
+    """Base class for all agents. Defines the required handle method."""
+    def __init__(self, name: str):
+        self.name = name
+        
+    async def handle(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Core agent handler. Must be overridden by all concrete agents 
+        (like GeminiAgent or a conceptual UniversalModelAgent).
+        """
+        raise NotImplementedError
+
+class UniversalModelAgent(Agent):
+    """
+    Simulates the underlying LLM's behavior without making live API calls.
+    Used for reliable simulation of the Sentinel/Aegis architecture.
+    """
+    async def handle(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        prompt = input_data.get("message")
+        
+        # Simulate model I/O time
+        await asyncio.sleep(0.1) 
+        
+        # Return a simulated, unedited response
+        return {"response": f"The model processed: '{prompt}' and the output may contain sensitive data."}
 
 # --- Gemini Agent ---
 class GeminiAgent(Agent):
