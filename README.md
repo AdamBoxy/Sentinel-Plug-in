@@ -36,7 +36,7 @@ The framework consists of two main components:
     cd Sentinel-Plug-in
     ```
 
-2.  **Set up a virtual environment (recommended):**
+2.  **Set up a virtual environment (recommended, skip for notebook):**
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
