@@ -33,7 +33,7 @@ The framework consists of two main components:
 1.  **Clone the repository:**
     ```bash
     git clone https://github.com/AdamBoxy/Sentinel-Plug-in.git
-    cd prompt-security-framework
+    cd Sentinel-Plug-in
     ```
 
 2.  **Set up a virtual environment (recommended):**
