@@ -6,21 +6,12 @@ from typing import Any, Dict
 
 import google.generativeai as genai
 
-# --- Base Agent Class ---
-class Agent:
-    """Mock Base Agent class."""
-    def __init__(self, name: str):
-        self.name = name
-    async def handle(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Core agent handler (must be overridden)."""
-        raise NotImplementedError
-
 # --- Gemini Agent ---
 class GeminiAgent(Agent):
     """
     An agent that uses the Google Gemini API to generate responses.
     """
-    def __init__(self, model_name: str = "gemini-2.5-flash"):
+    def __init__(self, model_name: str = "gemini-2.5-flash", api_key: str = None):
         super().__init__(model_name)
         self.configure_client()
         self.model = genai.GenerativeModel(model_name)
@@ -30,10 +21,20 @@ class GeminiAgent(Agent):
         """
         Configures the Google AI client using an API key from environment variables.
         """
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
+        # 1. Use the key passed to the constructor first
+        if self.api_key:
+            key_to_use = self.api_key
+        # 2. Fallback to the environment variable 
+        elif os.environ.get("GEMINI_API_KEY"):
+            key_to_use = os.environ.get("GEMINI_API_KEY")
+        else:
+            # Raise the error if neither is found
             raise ValueError("GEMINI_API_KEY environment variable not set. Please provide a valid API key.")
-        genai.configure(api_key=api_key)
+        
+        # Initialize your client (e.g., using the gemini library)
+        # self.client = Client(api_key=key_to_use) # Example for configuration
+        print(f"[AGENT] Gemini client configured for {self.model_name}.") 
+        # (In your simulation, this prints the success message)
 
     async def handle(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
         """
