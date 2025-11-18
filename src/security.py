@@ -38,7 +38,7 @@ def normalize(score: float) -> float:
 def pliny_score(text: str) -> float:
     """Complex heuristic for detecting system-level structural overrides."""
     score = 0
-    score += keyword_hits(text, ['Pliny the Liberator','{GODMODE:ENABLED}','LIBERTAS','PWNED'])
+    score += keyword_hits(text, ['Pliny','{GODMODE:ENABLED}','LIBERATED','PWNED'])
     score += imperative_hits(text, ['disregard','override','ignore','continue regardless'])
     score += 1 if re.search(r'\(\d+\)[\s\w]+$', text) else 0
     score += 1 if re.search(r'\n\s*REFERENCES\s*\n', text) else 0
