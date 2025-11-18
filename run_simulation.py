@@ -10,8 +10,22 @@ from src.security import (
     extract_metrics,
     ensemble_vote,
     handle_graduated_response,
-    mcp_on_tool_call
 )
+
+ async def mcp_on_tool_call(call_name: str, session_id: str, cache: SessionVerdictCache):
+    
+        # Retrieve the final verdict from the cache
+        verdict = cache.get(session_id) 
+        print(f"[MCP HOOK] Attempting tool call '{call_name}' in session {session_id}. Verdict: {verdict.level}")
+
+        if verdict.level in ['hard', 'tripwire']:
+            print(f"[MCP HOOK] Tool call BLOCKED: Session status is {verdict.level}.")
+            return {"error": "Tool call blocked by high-risk policy."}
+        
+        # Simulate execution if the verdict is 'clear' or 'soft'
+        print(f"[MCP HOOK] Tool call GRANTED: Executing {call_name}...")
+        await asyncio.sleep(0.01) # Simulate tool execution time
+        return {"result": f"Tool '{call_name}' successfully executed."}
 
 async def main():
     """Sets up and runs the security framework simulation."""
