@@ -9,7 +9,8 @@ from src.security import (
     SentinelMiddleware,
     extract_metrics,
     ensemble_vote,
-    handle_graduated_response
+    handle_graduated_response,
+    mcp_on_tool_call
 )
 
 async def main():
