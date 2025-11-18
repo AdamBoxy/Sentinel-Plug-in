@@ -51,7 +51,7 @@ async def main():
     result_safe = await sentinel.handle(safe_input)
     print("--- SCENARIO 1 RESULT (SAFE) ---")
     print(result_safe)
-    tool_check_safe = await mcp_on_tool_call("search_public_knowledge", "session-1")
+    tool_check_safe = await mcp_on_tool_call("search_public_knowledge", "session-1", cache=verdict_cache)
     print(tool_check_safe)
 
     # --- SCENARIO 2: INJECTED, HIGH-RISK INPUT ---
@@ -63,7 +63,7 @@ async def main():
     result_injected = await sentinel.handle(injected_input)
     print("\n--- SCENARIO 2 RESULT (INJECTED) ---")
     print(result_injected)
-    tool_check_injected = await mcp_on_tool_call("access_database", "session-2")
+    tool_check_injected = await mcp_on_tool_call("access_database", "session-2", cache=verdict_cache)
     print(tool_check_injected)
 
     # --- SCENARIO 3: UNTRUSTED SOURCE ---
