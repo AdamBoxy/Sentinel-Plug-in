@@ -66,4 +66,3 @@ This will run three pre-defined scenarios:
 This framework is designed to be extensible. You can contribute by:
 *   **Adding New Metrics**: Create a new function and add it to the `extract_metrics` flow in `src/security.py`.
 *   **Improving Heuristics**: Refine the `pliny_score` or `detect_prompt_injection` functions.
-*   **Integrating a Real LLM**: Replace the `UniversalModelAgent` in `src/agents.py` with an actual client for a service like Google's Gemini or OpenAI's GPT.
