@@ -19,9 +19,6 @@ The framework consists of two main components:
     *   **Ensemble Voting**: Aggregates metrics to produce a final security `Verdict` (`clear`, `soft`, `hard`, `tripwire`).
     *   **Graduated Response**: Takes action based on the verdict, from trimming output (`soft`) to isolating the session (`hard`) or killing it entirely (`tripwire`).
 
-!Architecture Diagram 
-*Note: You would create and link to a diagram explaining the data flow.*
-
 ## How to Run the Simulation
 
 ### Prerequisites
@@ -43,7 +40,6 @@ The framework consists of two main components:
     ```
 
 3.  **Install dependencies:**
-    *(While this project has no external dependencies, this is standard practice.)*
     ```bash
     pip install -r requirements.txt
     ```
